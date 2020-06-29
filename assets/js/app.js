@@ -52,7 +52,7 @@
         return xLinearScale;
 
     }
-
+    
     // Function used for updating y-scale variable upon click on axis label.
     function yScale(paperData, chosenYAxis) {
         // Create Scales.
@@ -75,7 +75,14 @@
 
         return xAxis;
     }
+    function demoDisplay(xaxis, yaxis) {
+        targetID="my_"+xaxis+"_"+yaxis;
 
+        getvisibalityflag=document.getElementById(targetID).style.visibility; 
+        console.log(getvisibalityflag);
+        document.getElementById(targetID).style.visibility = "visible";
+    }
+    // demoDisplay();
     // Function used for updating yAxis var upon click on axis label.
     function renderYAxes(newYScale, yAxis) {
         var leftAxis = d3.axisLeft(newYScale);
@@ -110,29 +117,32 @@
 
     // Function used for updating circles group with new tooltip.
     function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
-
+        var xlabel = "";
+        var ylabel = "";
         // Conditional for X Axis.
         if (chosenXAxis === "poverty") {
-            var xlabel = "Poverty: ";
+            xlabel = "Poverty: ";
         }
         else if (chosenXAxis === "income") {
-            var xlabel = "Median Income: "
+            xlabel = "Median Income: ";
         }
         else {
-            var xlabel = "Age: "
+            xlabel = "Age: ";
         }
 
         // Conditional for Y Axis.
         if (chosenYAxis === "healthcare") {
-            var ylabel = "Lacks Healthcare: ";
+            ylabel = "Lacks Healthcare: ";
         }
         else if (chosenYAxis === "smokes") {
-            var ylabel = "Smokers: "
+            ylabel = "Smokers: ";
         }
         else {
-            var ylabel = "Obesity: "
+            ylabel = "Obesity: ";
         }
-
+        // if ( (chosenXAxis === "poverty") && ( chosenYAxis === "healthcare") ) { demoDisplay() } 
+        // all_paras=d3.selectAll("p");
+        // console.log("hi " + all_paras.);
         var toolTip = d3.tip()
             .attr("class", "tooltip")
             .style("background", "black")
@@ -171,8 +181,8 @@
                  .transition()
                  .duration(1000)
             .attr("r", 15)
-            .attr("fill", "green")
-            toolTip.hide()
+            .attr("fill", "green");
+            toolTip.hide();
             });
             // .on("mouseout", function(data) {
             //    toolTip.hide(data)
@@ -193,7 +203,7 @@
             data.income = +data.income;
             data.smokes = +data.smokes;
             data.obesity = +data.obesity;
-            console.log(data);
+            // console.log(data);
         });
 
         // Create x scale function.
@@ -298,7 +308,7 @@
             .on("click", function() {
                 // Get value of selection.
                 var value = d3.select(this).attr("value");
-
+                console.log("changing selection !");
                 if (true) {
                     if (value === "poverty" || value === "age" || value === "income") {
 
@@ -406,7 +416,8 @@
                         }
                     
                     }
-
+                    console.log("here is what was selected X " + chosenXAxis + " Y " + chosenYAxis);
+                    demoDisplay(chosenXAxis, chosenYAxis);
                     // Update circles with new x values.
                     circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
 
