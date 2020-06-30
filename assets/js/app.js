@@ -79,8 +79,55 @@
         targetID="my_"+xaxis+"_"+yaxis;
 
         getvisibalityflag=document.getElementById(targetID).style.visibility; 
-        console.log(getvisibalityflag);
-        document.getElementById(targetID).style.visibility = "visible";
+        var matches = [].slice.call(document.querySelectorAll('[id^=my_]'));
+        var matcheslen = matches.length ;
+        //for ( var ind=1;ind<matcheslen;ind++) {
+        //     console.log(matches[ind]);
+        // }
+        function filter(a, f) 
+        { 
+          var ret = []; 
+          for (var i=0; i<a.length; ++i) 
+          {
+            if ( f(a[i]) ) 
+              ret.push(a[i]); 
+          }
+          return ret;
+        }
+        
+        // // this collects all elements in the current document
+        // var elements = document.getElementsByTagName("*");
+        
+        // // and this filters out all but those that match our pattern
+        // var logElements = filter(elements, function(el) 
+        //   { return /my_/.test(el.innerHTML.id);} ); // simple expression
+        // console.log(logElements)  ; 
+        // for (i=0;i< matcheslen; i++) {
+
+        //     // getvisibalityflag=document.getElementById(matches[i]).style.visibility; 
+        //     console.log(matches[i].style.visibility + " " + matches[i]);
+
+        //     document.getElementById(targetID).style.backgroundColor = "grey";
+
+        // }
+        // console.log(matches);
+        function getElementsByIdStartsWith(container, selectorTag, prefix) {
+            var items = [];
+            var myPosts = document.getElementById(container).getElementsByTagName(selectorTag);
+            for (var i = 0; i < myPosts.length; i++) {
+                //omitting undefined null check for brevity
+                if (myPosts[i].id.lastIndexOf(prefix, 0) === 0) {
+                    items.push($(myPosts[i].outerHTML).attr("id"));
+                }
+            }
+            return items;
+        }
+        var postedOnes = getElementsByIdStartsWith("darncontainer", "div", "my_");
+        // alert(postedOnes.length  + " " + yaxis  + " " + xaxis ) ;
+        // console.log(" here1 " + document.querySelector('[id^=my_]').id);
+        // console.log(getvisibalityflag);
+        for(i=0;i<postedOnes.length;i++) { document.getElementById(postedOnes[i]).style.background = "white"; }
+        document.getElementById(targetID).style.background = "gray";
     }
     // demoDisplay();
     // Function used for updating yAxis var upon click on axis label.
@@ -308,7 +355,7 @@
             .on("click", function() {
                 // Get value of selection.
                 var value = d3.select(this).attr("value");
-                console.log("changing selection !");
+                // console.log("changing selection !");
                 if (true) {
                     if (value === "poverty" || value === "age" || value === "income") {
 
@@ -416,7 +463,7 @@
                         }
                     
                     }
-                    console.log("here is what was selected X " + chosenXAxis + " Y " + chosenYAxis);
+                    // console.log("here is what was selected X " + chosenXAxis + " Y " + chosenYAxis);
                     demoDisplay(chosenXAxis, chosenYAxis);
                     // Update circles with new x values.
                     circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
